@@ -13,7 +13,9 @@ batch_size = 100
 learning_rate = 0.001
 
 # MNIST dataset
-train_dataset = torchvision.datasets.MNIST(root="../../data/", train=True, transform=transforms.ToTensor(), download=True)
+train_dataset = torchvision.datasets.MNIST(
+    root="../../data/", train=True, transform=transforms.ToTensor(), download=True
+)
 
 test_dataset = torchvision.datasets.MNIST(root="../../data/", train=False, transform=transforms.ToTensor())
 
@@ -27,8 +29,18 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=batch
 class ConvNet(nn.Module):
     def __init__(self, num_classes=10):
         super(ConvNet, self).__init__()
-        self.layer1 = nn.Sequential(nn.Conv2d(1, 16, kernel_size=5, stride=1, padding=2), nn.BatchNorm2d(16), nn.ReLU(), nn.MaxPool2d(kernel_size=2, stride=2))
-        self.layer2 = nn.Sequential(nn.Conv2d(16, 32, kernel_size=5, stride=1, padding=2), nn.BatchNorm2d(32), nn.ReLU(), nn.MaxPool2d(kernel_size=2, stride=2))
+        self.layer1 = nn.Sequential(
+            nn.Conv2d(1, 16, kernel_size=5, stride=1, padding=2),
+            nn.BatchNorm2d(16),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+        )
+        self.layer2 = nn.Sequential(
+            nn.Conv2d(16, 32, kernel_size=5, stride=1, padding=2),
+            nn.BatchNorm2d(32),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+        )
         self.fc = nn.Linear(7 * 7 * 32, num_classes)
 
     def forward(self, x):
@@ -62,7 +74,11 @@ for epoch in range(num_epochs):
         optimizer.step()
 
         if (i + 1) % 100 == 0:
-            print("Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}".format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
+            print(
+                "Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}".format(
+                    epoch + 1, num_epochs, i + 1, total_step, loss.item()
+                )
+            )
 
 # Test the model
 model.eval()  # eval mode (batchnorm uses moving mean/variance instead of mini-batch mean/variance)

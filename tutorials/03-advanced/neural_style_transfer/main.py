@@ -52,7 +52,9 @@ def main(config):
     # Image preprocessing
     # VGGNet was trained on ImageNet where images are normalized by mean=[0.485, 0.456, 0.406] and std=[0.229, 0.224, 0.225].
     # We use the same normalization statistics here.
-    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))])
+    transform = transforms.Compose(
+        [transforms.ToTensor(), transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))]
+    )
 
     # Load content and style images
     # Make the style image same size as the content image
@@ -96,7 +98,11 @@ def main(config):
         optimizer.step()
 
         if (step + 1) % config.log_step == 0:
-            print("Step [{}/{}], Content Loss: {:.4f}, Style Loss: {:.4f}".format(step + 1, config.total_step, content_loss.item(), style_loss.item()))
+            print(
+                "Step [{}/{}], Content Loss: {:.4f}, Style Loss: {:.4f}".format(
+                    step + 1, config.total_step, content_loss.item(), style_loss.item()
+                )
+            )
 
         if (step + 1) % config.sample_step == 0:
             # Save the generated image

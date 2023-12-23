@@ -26,7 +26,9 @@ if not os.path.exists(sample_dir):
 #                 transforms.ToTensor(),
 #                 transforms.Normalize(mean=(0.5, 0.5, 0.5),   # 3 for RGB channels
 #                                      std=(0.5, 0.5, 0.5))])
-transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])])  # 1 for greyscale channels
+transform = transforms.Compose(
+    [transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])]
+)  # 1 for greyscale channels
 
 # MNIST dataset
 mnist = torchvision.datasets.MNIST(root="../../data/", train=True, transform=transform, download=True)
@@ -36,11 +38,23 @@ data_loader = torch.utils.data.DataLoader(dataset=mnist, batch_size=batch_size, 
 
 # Discriminator
 D = nn.Sequential(
-    nn.Linear(image_size, hidden_size), nn.LeakyReLU(0.2), nn.Linear(hidden_size, hidden_size), nn.LeakyReLU(0.2), nn.Linear(hidden_size, 1), nn.Sigmoid()
+    nn.Linear(image_size, hidden_size),
+    nn.LeakyReLU(0.2),
+    nn.Linear(hidden_size, hidden_size),
+    nn.LeakyReLU(0.2),
+    nn.Linear(hidden_size, 1),
+    nn.Sigmoid(),
 )
 
 # Generator
-G = nn.Sequential(nn.Linear(latent_size, hidden_size), nn.ReLU(), nn.Linear(hidden_size, hidden_size), nn.ReLU(), nn.Linear(hidden_size, image_size), nn.Tanh())
+G = nn.Sequential(
+    nn.Linear(latent_size, hidden_size),
+    nn.ReLU(),
+    nn.Linear(hidden_size, hidden_size),
+    nn.ReLU(),
+    nn.Linear(hidden_size, image_size),
+    nn.Tanh(),
+)
 
 # Device setting
 D = D.to(device)
@@ -117,7 +131,14 @@ for epoch in range(num_epochs):
         if (i + 1) % 200 == 0:
             print(
                 "Epoch [{}/{}], Step [{}/{}], d_loss: {:.4f}, g_loss: {:.4f}, D(x): {:.2f}, D(G(z)): {:.2f}".format(
-                    epoch, num_epochs, i + 1, total_step, d_loss.item(), g_loss.item(), real_score.mean().item(), fake_score.mean().item()
+                    epoch,
+                    num_epochs,
+                    i + 1,
+                    total_step,
+                    d_loss.item(),
+                    g_loss.item(),
+                    real_score.mean().item(),
+                    fake_score.mean().item(),
                 )
             )
 

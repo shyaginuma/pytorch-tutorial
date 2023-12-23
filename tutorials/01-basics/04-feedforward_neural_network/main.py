@@ -15,7 +15,9 @@ batch_size = 100
 learning_rate = 0.001
 
 # MNIST dataset
-train_dataset = torchvision.datasets.MNIST(root="../../data", train=True, transform=transforms.ToTensor(), download=True)
+train_dataset = torchvision.datasets.MNIST(
+    root="../../data", train=True, transform=transforms.ToTensor(), download=True
+)
 
 test_dataset = torchvision.datasets.MNIST(root="../../data", train=False, transform=transforms.ToTensor())
 
@@ -64,7 +66,11 @@ for epoch in range(num_epochs):
         optimizer.step()
 
         if (i + 1) % 100 == 0:
-            print("Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}".format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
+            print(
+                "Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}".format(
+                    epoch + 1, num_epochs, i + 1, total_step, loss.item()
+                )
+            )
 
 # Test the model
 # In test phase, we don't need to compute gradients (for memory efficiency)

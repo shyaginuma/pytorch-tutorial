@@ -35,7 +35,9 @@ def main(args):
         vocab = pickle.load(f)
 
     # Build data loader
-    data_loader = get_loader(args.image_dir, args.caption_path, vocab, transform, args.batch_size, shuffle=True, num_workers=args.num_workers)
+    data_loader = get_loader(
+        args.image_dir, args.caption_path, vocab, transform, args.batch_size, shuffle=True, num_workers=args.num_workers
+    )
 
     # Build the models
     encoder = EncoderCNN(args.embed_size).to(device)
@@ -74,8 +76,12 @@ def main(args):
 
             # Save the model checkpoints
             if (i + 1) % args.save_step == 0:
-                torch.save(decoder.state_dict(), os.path.join(args.model_path, "decoder-{}-{}.ckpt".format(epoch + 1, i + 1)))
-                torch.save(encoder.state_dict(), os.path.join(args.model_path, "encoder-{}-{}.ckpt".format(epoch + 1, i + 1)))
+                torch.save(
+                    decoder.state_dict(), os.path.join(args.model_path, "decoder-{}-{}.ckpt".format(epoch + 1, i + 1))
+                )
+                torch.save(
+                    encoder.state_dict(), os.path.join(args.model_path, "encoder-{}-{}.ckpt".format(epoch + 1, i + 1))
+                )
 
 
 if __name__ == "__main__":
@@ -84,7 +90,12 @@ if __name__ == "__main__":
     parser.add_argument("--crop_size", type=int, default=224, help="size for randomly cropping images")
     parser.add_argument("--vocab_path", type=str, default="data/vocab.pkl", help="path for vocabulary wrapper")
     parser.add_argument("--image_dir", type=str, default="data/resized2014", help="directory for resized images")
-    parser.add_argument("--caption_path", type=str, default="data/annotations/captions_train2014.json", help="path for train annotation json file")
+    parser.add_argument(
+        "--caption_path",
+        type=str,
+        default="data/annotations/captions_train2014.json",
+        help="path for train annotation json file",
+    )
     parser.add_argument("--log_step", type=int, default=10, help="step size for prining log info")
     parser.add_argument("--save_step", type=int, default=1000, help="step size for saving trained models")
 

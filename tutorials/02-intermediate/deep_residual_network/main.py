@@ -19,7 +19,9 @@ batch_size = 100
 learning_rate = 0.001
 
 # Image preprocessing modules
-transform = transforms.Compose([transforms.Pad(4), transforms.RandomHorizontalFlip(), transforms.RandomCrop(32), transforms.ToTensor()])
+transform = transforms.Compose(
+    [transforms.Pad(4), transforms.RandomHorizontalFlip(), transforms.RandomCrop(32), transforms.ToTensor()]
+)
 
 # CIFAR-10 dataset
 train_dataset = torchvision.datasets.CIFAR10(root="../../data/", train=True, transform=transform, download=True)
@@ -79,7 +81,9 @@ class ResNet(nn.Module):
     def make_layer(self, block, out_channels, blocks, stride=1):
         downsample = None
         if (stride != 1) or (self.in_channels != out_channels):
-            downsample = nn.Sequential(conv3x3(self.in_channels, out_channels, stride=stride), nn.BatchNorm2d(out_channels))
+            downsample = nn.Sequential(
+                conv3x3(self.in_channels, out_channels, stride=stride), nn.BatchNorm2d(out_channels)
+            )
         layers = []
         layers.append(block(self.in_channels, out_channels, stride, downsample))
         self.in_channels = out_channels
@@ -132,7 +136,9 @@ for epoch in range(num_epochs):
         optimizer.step()
 
         if (i + 1) % 100 == 0:
-            print("Epoch [{}/{}], Step [{}/{}] Loss: {:.4f}".format(epoch + 1, num_epochs, i + 1, total_step, loss.item()))
+            print(
+                "Epoch [{}/{}], Step [{}/{}] Loss: {:.4f}".format(epoch + 1, num_epochs, i + 1, total_step, loss.item())
+            )
 
     # Decay learning rate
     if (epoch + 1) % 20 == 0:
