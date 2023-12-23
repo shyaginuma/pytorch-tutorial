@@ -1,5 +1,6 @@
-import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import plotly.express as px
 import torch
 import torch.nn as nn
 
@@ -53,11 +54,11 @@ y_train = np.array(
 )
 
 # Linear regression model
-model = nn.Linear(input_size, output_size)
+model = TODO
 
 # Loss and optimizer
-criterion = nn.MSELoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+criterion = TODO
+optimizer = TODO
 
 # Train the model
 for epoch in range(num_epochs):
@@ -66,23 +67,29 @@ for epoch in range(num_epochs):
     targets = torch.from_numpy(y_train)
 
     # Forward pass
-    outputs = model(inputs)
-    loss = criterion(outputs, targets)
+    outputs = TODO
+    loss = TODO
 
     # Backward and optimize
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.step()
+    TODO
 
     if (epoch + 1) % 5 == 0:
         print("Epoch [{}/{}], Loss: {:.4f}".format(epoch + 1, num_epochs, loss.item()))
 
 # Plot the graph
 predicted = model(torch.from_numpy(x_train)).detach().numpy()
-plt.plot(x_train, y_train, "ro", label="Original data")
-plt.plot(x_train, predicted, label="Fitted line")
-plt.legend()
-plt.show()
+df = pd.DataFrame()
+df["x"] = x_train
+df["y"] = y_train
+df["pred"] = predicted
+df = pd.melt(df, id_vars=["x"], value_vars=["y", "y_pred"])
+fig = px.scatter(
+    df,
+    x="x",
+    y="value",
+    color="variable",
+)
+fig.show()
 
 # Save the model checkpoint
 torch.save(model.state_dict(), "model.ckpt")

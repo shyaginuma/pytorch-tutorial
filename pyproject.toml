@@ -11,6 +11,7 @@ numpy = "^1.26.2"
 torch = "^2.1.2"
 torchvision = "^0.16.2"
 plotly = "^5.18.0"
+pandas = "^2.1.4"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.12.1"
