@@ -12,6 +12,6 @@ y = torch.from_numpy(x)
 z = y.numpy()
 
 # check z
-print("x: ", x)
-print("y: ", y)
-print("z: ", z)
+print("x: \n", x)
+print("y: \n", y)
+print("z: \n", z)
