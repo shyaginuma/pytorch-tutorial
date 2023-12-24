@@ -78,11 +78,10 @@ for epoch in range(num_epochs):
 
 # Plot the graph
 predicted = model(torch.from_numpy(x_train)).detach().numpy()
-df = pd.DataFrame()
-df["x"] = x_train
+df = pd.DataFrame(x_train, columns=["x"])
 df["y"] = y_train
 df["pred"] = predicted
-df = pd.melt(df, id_vars=["x"], value_vars=["y", "y_pred"])
+df = pd.melt(df, id_vars=["x"], value_vars=["y", "pred"])
 fig = px.scatter(
     df,
     x="x",
