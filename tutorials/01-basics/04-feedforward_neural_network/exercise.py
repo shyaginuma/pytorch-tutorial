@@ -3,47 +3,63 @@ import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
 
+# Device configuration
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 # Hyper-parameters
-input_size = 28 * 28  # 784
+input_size = 784
+hidden_size = 500
 num_classes = 10
 num_epochs = 5
 batch_size = 100
 learning_rate = 0.001
 
-# MNIST dataset (images and labels)
+# MNIST dataset
 train_dataset = torchvision.datasets.MNIST(
     root="../../data", train=True, transform=transforms.ToTensor(), download=True
 )
 
 test_dataset = torchvision.datasets.MNIST(root="../../data", train=False, transform=transforms.ToTensor())
 
-# Data loader (input pipeline)
+# Data loader
 train_loader = TODO
 
 test_loader = TODO
 
-# Logistic regression model
-model = nn.Linear(in_features=input_size, out_features=num_classes)
+
+# Fully connected neural network with one hidden layer
+class NeuralNet(nn.Module):
+    def __init__(self, input_size, hidden_size, num_classes):
+        super(NeuralNet, self).__init__()
+        self.fc1 = TODO
+        self.relu = TODO
+        self.fc2 = TODO
+
+    def forward(self, x):
+        TODO
+        return out
+
+
+model = NeuralNet(input_size, hidden_size, num_classes).to(device)
 
 # Loss and optimizer
-criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+criterion = TODO
+optimizer = TODO
 
 # Train the model
 total_step = len(train_loader)
 for epoch in range(num_epochs):
     for i, (images, labels) in enumerate(train_loader):
-        # Reshape images to (batch_size, input_size)
-        images = images.reshape(-1, input_size)
+        # Move tensors to the configured device
+        images = images.reshape(-1, 28 * 28).to(device)
+        labels = labels.to(device)
 
         # Forward pass
-        outputs = model(images)
-        loss = criterion(outputs, labels)
+        outputs = TODO
+        loss = TODO
 
         # Backward and optimize
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
+        TODO
 
         if (i + 1) % 100 == 0:
             print(
@@ -58,13 +74,14 @@ with torch.no_grad():
     correct = 0
     total = 0
     for images, labels in test_loader:
-        images = images.reshape(-1, input_size)
+        images = images.reshape(-1, 28 * 28).to(device)
+        labels = labels.to(device)
         outputs = model(images)
         _, predicted = torch.max(outputs.data, 1)
         total += labels.size(0)
-        correct += (predicted == labels).sum()
+        correct += (predicted == labels).sum().item()
 
-    print("Accuracy of the model on the 10000 test images: {} %".format(100 * correct / total))
+    print("Accuracy of the network on the 10000 test images: {} %".format(100 * correct / total))
 
 # Save the model checkpoint
 torch.save(model.state_dict(), "model.ckpt")
